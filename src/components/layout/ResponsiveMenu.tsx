@@ -31,7 +31,7 @@ const ResponsiveMenu = ({ openNav, setOpenNav }: ResponsiveMenuProps) => {
           </Link>
         </li>
         <li>
-          <Link href="/product" className={linkClass("/product")} onClick={() => setOpenNav(false)}>
+          <Link href="/products" className={linkClass("/products")} onClick={() => setOpenNav(false)}>
             Products
           </Link>
         </li>

@@ -1,12 +1,14 @@
 'use client';
 
 import Link from "next/link";
+import { useUser, SignInButton } from "@clerk/nextjs";
 import { useCart } from "@/store/cartStore";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag } from "lucide-react";
+import { ShoppingBag, Lock } from "lucide-react";
 
 export default function CartSummary() {
   const { items, getTotal } = useCart();
+  const { user, isLoaded } = useUser();
   
   const subtotal = getTotal();
   const tax = subtotal * 0.1; // 10% tax
@@ -76,11 +78,26 @@ export default function CartSummary() {
       </div>
 
       {/* Checkout Button */}
-      <Link href="/checkout" className="block mb-3">
-        <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" aria-label="Proceed to checkout">
-          Proceed to Checkout
+      {!isLoaded ? (
+        <Button className="w-full bg-slate-400 cursor-not-allowed text-white" disabled>
+          Loading...
         </Button>
-      </Link>
+      ) : !user ? (
+        <SignInButton mode="modal">
+          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2">
+            <Lock size={18} />
+            Sign In to Checkout
+          </Button>
+        </SignInButton>
+      ) : (
+        <Link href="/checkout" className="block mb-3">
+          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" aria-label="Proceed to checkout">
+            Proceed to Checkout
+          </Button>
+        </Link>
+      )}
+      
+      {user && <div className="mb-3"></div>}
 
       {/* Continue Shopping Button */}
       <Link href="/">

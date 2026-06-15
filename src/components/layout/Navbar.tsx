@@ -61,7 +61,7 @@ const Navbar = ({ location, getLocation, openDropdown, setOpenDropdown }: Navbar
               </Link>
             </li>
             <li>
-              <Link href={"/product"} className={linkClass("/product")} aria-current={pathname === "/product" ? "page" : undefined}>
+              <Link href={"/products"} className={linkClass("/products")} aria-current={pathname === "/products" ? "page" : undefined}>
                 Products
               </Link>
             </li>
