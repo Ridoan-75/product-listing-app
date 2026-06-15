@@ -16,15 +16,15 @@ const ResponsiveMenu = ({ openNav, setOpenNav }: ResponsiveMenuProps) => {
   const linkClass = (path: string) =>
     `${
       pathname === path
-        ? "border-b-2 transition-all border-violet-500"
-        : "text-gray-700"
-    } cursor-pointer py-2`;
+        ? "border-l-3 transition-all border-purple-600 text-purple-600 font-semibold"
+        : "text-slate-700 hover:text-purple-600"
+    } cursor-pointer py-3 pl-3 block transition-colors`;
 
   if (!openNav) return null;
 
   return (
-    <div className="md:hidden bg-white border-t border-gray-200 py-4 px-4">
-      <ul className="flex flex-col gap-4">
+    <div className="md:hidden fixed top-24 left-4 right-4 bg-white border-2 border-purple-200 rounded-lg shadow-lg py-4 px-4 z-40">
+      <ul className="flex flex-col gap-2">
         <li>
           <Link href="/" className={linkClass("/")} onClick={() => setOpenNav(false)}>
             Home
@@ -45,10 +45,10 @@ const ResponsiveMenu = ({ openNav, setOpenNav }: ResponsiveMenuProps) => {
             Contact
           </Link>
         </li>
-        <li className="pt-4 border-t border-gray-200 flex items-center justify-between gap-3">
+        <li className="pt-3 mt-2 border-t border-purple-200 flex items-center justify-between gap-3">
           {!user ? (
             <SignInButton mode="modal">
-              <button className="bg-violet-600 text-white px-4 py-2 rounded-md hover:bg-violet-500 transition-colors flex-1">
+              <button className="bg-purple-600 text-white px-4 py-2 rounded-md hover:bg-purple-700 transition-colors flex-1 font-semibold">
                 Sign In
               </button>
             </SignInButton>

@@ -25,7 +25,7 @@ export default function CartSummary() {
         <p className="text-slate-500 mb-6">
           Add some products to get started!
         </p>
-        <Link href="/">
+        <Link href="/products">
           <Button className="w-full">Continue Shopping</Button>
         </Link>
       </div>
@@ -78,26 +78,26 @@ export default function CartSummary() {
       </div>
 
       {/* Checkout Button */}
-      {!isLoaded ? (
-        <Button className="w-full bg-slate-400 cursor-not-allowed text-white" disabled>
-          Loading...
-        </Button>
-      ) : !user ? (
-        <SignInButton mode="modal">
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white flex items-center justify-center gap-2">
-            <Lock size={18} />
-            Sign In to Checkout
+      <div className="mb-3">
+        {!isLoaded ? (
+          <Button disabled className="w-full">
+            Loading...
           </Button>
-        </SignInButton>
-      ) : (
-        <Link href="/checkout" className="block mb-3">
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white" aria-label="Proceed to checkout">
-            Proceed to Checkout
-          </Button>
-        </Link>
-      )}
-      
-      {user && <div className="mb-3"></div>}
+        ) : !user ? (
+          <SignInButton mode="modal">
+            <Button className="w-full flex items-center justify-center gap-2">
+              <Lock size={18} />
+              Sign In to Checkout
+            </Button>
+          </SignInButton>
+        ) : (
+          <Link href="/checkout" className="block">
+            <Button className="w-full">
+              Proceed to Checkout
+            </Button>
+          </Link>
+        )}
+      </div>
 
       {/* Continue Shopping Button */}
       <Link href="/">

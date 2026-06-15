@@ -18,7 +18,7 @@ export default function CartItem({ item }: CartItemProps) {
   return (
     <div className="flex flex-col sm:flex-row gap-4 p-4 border border-slate-200 rounded-lg hover:shadow-md transition-shadow" role="article" aria-label={`Cart item: ${item.title}`}>
       {/* Product Image */}
-      <div className="w-full sm:w-24 h-24 relative flex-shrink-0">
+      <div className="w-full sm:w-24 h-24 relative shrink-0">
         <Image
           src={item.image}
           alt={`Product image: ${item.title}`}
@@ -67,7 +67,7 @@ export default function CartItem({ item }: CartItemProps) {
         </div>
 
         {/* Subtotal */}
-        <div className="text-right flex-shrink-0">
+        <div className="text-right shrink-0">
           <p className="text-sm text-slate-500">Subtotal</p>
           <p className="text-lg font-bold text-slate-900" aria-label={`Subtotal: $${subtotal.toFixed(2)}`}>
             ${subtotal.toFixed(2)}

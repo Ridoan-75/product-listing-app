@@ -2,7 +2,9 @@
 
 import Link from 'next/link';
 import ProductCard from './ProductCard';
+import { Button } from '@/components/ui/button';
 import { Product } from '@/types/product';
+import { PAGINATION, ROUTES } from '@/constants';
 import { ArrowRight } from 'lucide-react';
 
 interface FeaturedProductsProps {
@@ -10,8 +12,8 @@ interface FeaturedProductsProps {
 }
 
 export default function FeaturedProducts({ products }: FeaturedProductsProps) {
-  // Show first 4 products as featured
-  const featuredProducts = products.slice(0, 4);
+  // Show first N products as featured
+  const featuredProducts = products.slice(0, PAGINATION.FEATURED_PRODUCTS_COUNT);
 
   return (
     <div className="w-full px-3 xs:px-4 sm:px-6 lg:px-8 py-8 xs:py-10 sm:py-14 lg:py-20">
@@ -36,10 +38,10 @@ export default function FeaturedProducts({ products }: FeaturedProductsProps) {
       {/* All Products Button */}
       <div className="text-center">
         <Link href="/products">
-          <button className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white px-6 xs:px-8 sm:px-10 py-3 xs:py-4 rounded-full font-semibold text-sm xs:text-base transition-all duration-300 hover:shadow-lg hover:scale-105">
+          <Button size="lg" className="inline-flex items-center gap-2">
             View All Products
-            <ArrowRight size={18} className="xs:size-5" />
-          </button>
+            <ArrowRight size={18} />
+          </Button>
         </Link>
         <p className="text-slate-500 text-xs xs:text-sm mt-3 xs:mt-4">
           Explore our complete collection of {products.length} products

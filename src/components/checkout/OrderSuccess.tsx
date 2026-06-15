@@ -120,7 +120,7 @@ export default function OrderSuccess() {
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 max-w-2xl mx-auto w-full">
         <Link href="/products" className="flex-1">
-          <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white">
+          <Button className="w-full">
             Continue Shopping
           </Button>
         </Link>

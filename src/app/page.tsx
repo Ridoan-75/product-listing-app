@@ -7,21 +7,19 @@ export default async function HomePage() {
   const products = await getAllProducts();
 
   return (
-    <main className="w-full">
-      {/* Banner Section*/}
-      <section className="bg-gradient-to-b from-blue-50 to-white">
-        <Banner products={products} />
-      </section>
+    <>
+      {/* Banner Section */}
+      <Banner products={products} />
 
       {/* Categories Section */}
-      <section>
+      <section className="max-w-7xl mx-auto px-4">
         <CategoriesSection />
       </section>
 
       {/* Featured Products Section */}
-      <section className="bg-slate-50">
+      <section className="max-w-7xl mx-auto px-4">
         <FeaturedProducts products={products} />
       </section>
-    </main>
+    </>
   );
 }

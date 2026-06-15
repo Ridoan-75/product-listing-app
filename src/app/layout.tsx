@@ -18,9 +18,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={cn("h-full", "antialiased")}
+      className={cn("h-full scroll-smooth scroll-pt-24", "antialiased")}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="min-h-full flex flex-col bg-linear-to-b from-slate-50 to-gray-100">
         <ClerkProvider>
           <QueryProvider>
             <LayoutContent>{children}</LayoutContent>

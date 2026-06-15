@@ -3,6 +3,7 @@
 import { useUser } from '@clerk/nextjs';
 import { SignInButton } from '@clerk/nextjs';
 import CheckoutForm from "@/components/checkout/CheckoutForm";
+import { Button } from "@/components/ui/button";
 import { Suspense } from "react";
 import { Lock } from 'lucide-react';
 
@@ -11,17 +12,15 @@ export default function CheckoutPage() {
 
   if (!isLoaded) {
     return (
-      <main className="max-w-4xl mx-auto px-4 py-10">
-        <div className="text-center py-12">
-          <p className="text-slate-500">Loading...</p>
-        </div>
-      </main>
+      <div className="text-center py-12">
+        <p className="text-slate-500">Loading...</p>
+      </div>
     );
   }
 
   if (!user) {
     return (
-      <main className="max-w-4xl mx-auto px-4 py-10">
+      <div className="text-center">
         <div className="bg-white rounded-lg border border-slate-200 p-8">
           <div className="text-center">
             <div className="flex justify-center mb-6">
@@ -37,9 +36,9 @@ export default function CheckoutPage() {
             </p>
             
             <SignInButton mode="modal">
-              <button className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-colors inline-block mb-4">
+              <Button size="lg" className="mb-4">
                 Sign In to Continue
-              </button>
+              </Button>
             </SignInButton>
 
             <p className="text-sm text-slate-500 mt-6">
@@ -47,12 +46,12 @@ export default function CheckoutPage() {
             </p>
           </div>
         </div>
-      </main>
+      </div>
     );
   }
 
   return (
-    <main className="max-w-4xl mx-auto px-4 py-10">
+    <>
       <div className="mb-8">
         <div className="flex items-center gap-3 mb-4">
           <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
@@ -72,6 +71,6 @@ export default function CheckoutPage() {
           <CheckoutForm />
         </Suspense>
       </div>
-    </main>
+    </>
   );
 }

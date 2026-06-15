@@ -8,10 +8,10 @@ export const metadata = {
 
 export default function OrderSuccessPage() {
   return (
-    <main className="max-w-4xl mx-auto px-4 py-10">
+    <>
       <Suspense fallback={<div className="text-center py-12">Loading...</div>}>
         <OrderSuccess />
       </Suspense>
-    </main>
+    </>
   );
 }

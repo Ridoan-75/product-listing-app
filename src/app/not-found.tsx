@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { AlertCircle } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
@@ -20,14 +21,10 @@ export default function NotFound() {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
           <Link href="/">
-            <button className="bg-violet-600 text-white px-8 py-3 rounded-md hover:bg-violet-500 transition-colors font-semibold">
-              Go Home
-            </button>
+            <Button size="lg">Go Home</Button>
           </Link>
           <Link href="/products">
-            <button className="bg-gray-200 text-gray-800 px-8 py-3 rounded-md hover:bg-gray-300 transition-colors font-semibold">
-              Browse Products
-            </button>
+            <Button variant="secondary" size="lg">Browse Products</Button>
           </Link>
         </div>
 
