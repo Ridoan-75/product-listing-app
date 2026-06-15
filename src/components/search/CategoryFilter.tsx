@@ -24,7 +24,7 @@ export default function CategoryFilter({
 
   return (
     <Select value={value} onValueChange={onChange}>
-      <SelectTrigger className="w-full sm:w-[180px]">
+      <SelectTrigger className="w-full sm:w-45">
         <SelectValue placeholder="All Categories" />
       </SelectTrigger>
       <SelectContent>
