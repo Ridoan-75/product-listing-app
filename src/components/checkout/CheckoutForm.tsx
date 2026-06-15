@@ -16,9 +16,8 @@ interface FormData {
   city: string;
   state: string;
   zipCode: string;
-  cardNumber: string;
-  cardExpiry: string;
-  cardCVC: string;
+  paymentMethod: 'cod';
+  agreeToTerms: boolean;
 }
 
 interface FormErrors {
@@ -34,9 +33,8 @@ const initialFormData: FormData = {
   city: '',
   state: '',
   zipCode: '',
-  cardNumber: '',
-  cardExpiry: '',
-  cardCVC: '',
+  paymentMethod: 'cod',
+  agreeToTerms: false,
 };
 
 export default function CheckoutForm() {
@@ -65,14 +63,8 @@ export default function CheckoutForm() {
     if (!formData.zipCode.match(/^\d{5,}$/)) {
       newErrors.zipCode = 'Valid zip code is required';
     }
-    if (!formData.cardNumber.replace(/\s/g, '').match(/^\d{16}$/)) {
-      newErrors.cardNumber = 'Valid 16-digit card number is required';
-    }
-    if (!formData.cardExpiry.match(/^\d{2}\/\d{2}$/)) {
-      newErrors.cardExpiry = 'Expiry date must be MM/YY';
-    }
-    if (!formData.cardCVC.match(/^\d{3,4}$/)) {
-      newErrors.cardCVC = 'Valid CVC is required';
+    if (!formData.agreeToTerms) {
+      newErrors.agreeToTerms = 'You must agree to the terms and conditions';
     }
 
     setErrors(newErrors);
@@ -80,26 +72,14 @@ export default function CheckoutForm() {
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
+    const { name, value, type } = e.target;
     
-    // Format card number with spaces
-    if (name === 'cardNumber') {
-      const formatted = value.replace(/\s/g, '').replace(/(\d{4})/g, '$1 ').trim();
-      setFormData(prev => ({ ...prev, [name]: formatted }));
-      return;
+    if (type === 'checkbox') {
+      setFormData(prev => ({ ...prev, [name]: (e.target as HTMLInputElement).checked }));
+    } else {
+      setFormData(prev => ({ ...prev, [name]: value }));
     }
     
-    // Format card expiry MM/YY
-    if (name === 'cardExpiry') {
-      let formatted = value.replace(/\D/g, '');
-      if (formatted.length >= 2) {
-        formatted = formatted.slice(0, 2) + '/' + formatted.slice(2, 4);
-      }
-      setFormData(prev => ({ ...prev, [name]: formatted }));
-      return;
-    }
-
-    setFormData(prev => ({ ...prev, [name]: value }));
     // Clear error for this field when user starts typing
     if (errors[name]) {
       setErrors(prev => ({ ...prev, [name]: '' }));
@@ -325,69 +305,54 @@ export default function CheckoutForm() {
         </div>
       </fieldset>
 
-      {/* Payment Information */}
+      {/* Payment Method */}
       <fieldset>
         <legend className="text-lg font-bold text-slate-900 mb-4">
-          Payment Information
+          Payment Method
         </legend>
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-slate-700 mb-1">
-              Card Number *
-            </label>
-            <Input
-              type="text"
-              name="cardNumber"
-              value={formData.cardNumber}
+        <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
+          <div className="flex items-start gap-3">
+            <input
+              type="radio"
+              id="cod"
+              name="paymentMethod"
+              value="cod"
+              checked={formData.paymentMethod === 'cod'}
               onChange={handleChange}
-              placeholder="1234 5678 9012 3456"
-              maxLength={19}
               disabled={isLoading}
-              className={errors.cardNumber ? 'border-red-500' : ''}
+              className="mt-1"
             />
-            {errors.cardNumber && (
-              <p className="text-red-500 text-xs mt-1">{errors.cardNumber}</p>
-            )}
+            <div className="flex-1">
+              <label htmlFor="cod" className="font-semibold text-slate-900 cursor-pointer block">
+                Cash on Delivery (COD)
+              </label>
+              <p className="text-sm text-slate-600 mt-1">
+                Pay when your order is delivered. No prepayment required.
+              </p>
+            </div>
           </div>
+        </div>
+      </fieldset>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                Expiry Date (MM/YY) *
-              </label>
-              <Input
-                type="text"
-                name="cardExpiry"
-                value={formData.cardExpiry}
-                onChange={handleChange}
-                placeholder="12/25"
-                maxLength={5}
-                disabled={isLoading}
-                className={errors.cardExpiry ? 'border-red-500' : ''}
-              />
-              {errors.cardExpiry && (
-                <p className="text-red-500 text-xs mt-1">{errors.cardExpiry}</p>
-              )}
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">
-                CVC *
-              </label>
-              <Input
-                type="text"
-                name="cardCVC"
-                value={formData.cardCVC}
-                onChange={handleChange}
-                placeholder="123"
-                maxLength={4}
-                disabled={isLoading}
-                className={errors.cardCVC ? 'border-red-500' : ''}
-              />
-              {errors.cardCVC && (
-                <p className="text-red-500 text-xs mt-1">{errors.cardCVC}</p>
-              )}
-            </div>
+      {/* Terms & Conditions */}
+      <fieldset>
+        <div className="flex items-start gap-3 p-4 bg-slate-50 border border-slate-200 rounded-lg">
+          <input
+            type="checkbox"
+            id="agreeToTerms"
+            name="agreeToTerms"
+            checked={formData.agreeToTerms}
+            onChange={handleChange}
+            disabled={isLoading}
+            className="mt-1"
+          />
+          <div className="flex-1">
+            <label htmlFor="agreeToTerms" className="text-sm text-slate-700 cursor-pointer">
+              I agree to the terms and conditions and privacy policy *
+            </label>
+            {errors.agreeToTerms && (
+              <p className="text-red-500 text-xs mt-1">{errors.agreeToTerms}</p>
+            )}
           </div>
         </div>
       </fieldset>
@@ -407,10 +372,6 @@ export default function CheckoutForm() {
       >
         {isLoading ? 'Processing...' : 'Place Order'}
       </Button>
-
-      <p className="text-xs text-slate-500 text-center">
-        By placing an order, you agree to our terms and conditions
-      </p>
     </form>
   );
 }
