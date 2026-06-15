@@ -1,9 +1,9 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, ChevronRight, Star } from 'lucide-react';
+import { ChevronLeft, ChevronRight, ShoppingCart } from 'lucide-react';
 import { Product } from '@/types/product';
 
 interface BannerProps {
@@ -13,134 +13,137 @@ interface BannerProps {
 export default function Banner({ products }: BannerProps) {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
+  const [fading, setFading] = useState(false);
 
-  // Get 3 random featured products for banner
-  const bannerProducts = products.slice(0, 3);
+  const bannerProducts = products.slice(0, 5);
+
+  const changeSlide = useCallback((newIndex: number) => {
+    setFading(true);
+    setTimeout(() => {
+      setCurrentIndex(newIndex);
+      setFading(false);
+    }, 300);
+  }, []);
 
   useEffect(() => {
-    if (!isAutoPlay) return;
-    
+    if (!isAutoPlay || bannerProducts.length === 0) return;
     const interval = setInterval(() => {
-      setCurrentIndex((prev) => (prev + 1) % bannerProducts.length);
-    }, 5000); // Auto-rotate every 5 seconds
-
+      changeSlide((currentIndex + 1) % bannerProducts.length);
+    }, 4000);
     return () => clearInterval(interval);
-  }, [isAutoPlay, bannerProducts.length]);
+  }, [isAutoPlay, currentIndex, bannerProducts.length, changeSlide]);
 
   const goToPrevious = () => {
     setIsAutoPlay(false);
-    setCurrentIndex((prev) =>
-      prev === 0 ? bannerProducts.length - 1 : prev - 1
-    );
+    changeSlide(currentIndex === 0 ? bannerProducts.length - 1 : currentIndex - 1);
   };
 
   const goToNext = () => {
     setIsAutoPlay(false);
-    setCurrentIndex((prev) => (prev + 1) % bannerProducts.length);
-  };
-
-  const goToSlide = (index: number) => {
-    setIsAutoPlay(false);
-    setCurrentIndex(index);
+    changeSlide((currentIndex + 1) % bannerProducts.length);
   };
 
   if (bannerProducts.length === 0) return null;
 
-  const currentProduct = bannerProducts[currentIndex];
+  const product = bannerProducts[currentIndex];
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    console.log('Added to cart:', product.id);
+  };
 
   return (
-    <div className="mb-12">
-      {/* Main Banner */}
-      <div className="relative bg-gradient-to-r from-blue-50 to-slate-50 rounded-2xl overflow-hidden">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center p-6 md:p-10 h-[400px] md:h-[500px]">
-          {/* Product Image */}
-          <div className="relative h-full w-full flex items-center justify-center">
-            <div className="relative w-full h-full">
+    <div className="w-full pt-6">
+      <div className="relative w-full overflow-hidden bg-gradient-to-r from-indigo-50 via-white to-purple-50">
+        <div className="relative flex items-center justify-between gap-6 px-4 sm:px-12 lg:px-20 py-10 sm:py-14 lg:py-20 min-h-[320px] sm:min-h-[400px] lg:min-h-[460px]">
+
+          {/* LEFT — Product Info */}
+          <div
+            className={`flex flex-col justify-center max-w-[55%] transition-opacity duration-300 ${
+              fading ? 'opacity-0' : 'opacity-100'
+            }`}
+          >
+            <span className="inline-block text-indigo-600 text-xs sm:text-sm font-semibold mb-3 line-clamp-1">
+              Best Deal Online on {product.category}
+            </span>
+
+            <h1 className="text-3xl sm:text-4xl lg:text-6xl font-extrabold text-slate-900 leading-tight tracking-tight mb-4 line-clamp-2 uppercase">
+              {product.title}
+            </h1>
+
+            <p className="text-slate-500 text-sm sm:text-base lg:text-lg font-medium mb-8">
+              Up to <span className="text-indigo-600 font-bold">80% OFF</span> · ${product.price.toFixed(2)}
+            </p>
+
+            <div className="flex items-center gap-3">
+              <Link href={`/products/${product.id}`}>
+                <button className="bg-slate-900 hover:bg-slate-700 text-white px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-semibold text-sm transition-all duration-200">
+                  Shop Now
+                </button>
+              </Link>
+              <button
+                onClick={handleAddToCart}
+                className="flex items-center gap-2 border border-slate-200 hover:bg-white text-slate-900 bg-white/60 px-6 sm:px-8 py-3 sm:py-3.5 rounded-full font-semibold text-sm transition-all duration-200"
+              >
+                <ShoppingCart size={16} /> Add to Cart
+              </button>
+            </div>
+          </div>
+
+          {/* RIGHT — Product Image */}
+          <div className="relative w-[40%] sm:w-[35%] flex items-center justify-center">
+            <div className="absolute w-[80%] aspect-square rounded-full bg-white shadow-inner" />
+            <div
+              className={`relative z-10 w-full h-48 sm:h-64 lg:h-80 transition-opacity duration-300 ${
+                fading ? 'opacity-0' : 'opacity-100'
+              }`}
+            >
               <Image
-                src={currentProduct.image}
-                alt={currentProduct.title}
+                src={product.image}
+                alt={product.title}
                 fill
-                className="object-contain"
-                sizes="(max-width: 768px) 100vw, 50vw"
+                className="object-contain drop-shadow-2xl"
+                sizes="40vw"
                 priority
               />
             </div>
           </div>
 
-          {/* Product Info */}
-          <div className="flex flex-col justify-center space-y-4">
-            <div>
-              <span className="inline-block bg-blue-100 text-blue-700 px-3 py-1 rounded-full text-sm font-semibold mb-3">
-                Featured
-              </span>
-              <h2 className="text-2xl md:text-3xl font-bold text-slate-900 line-clamp-3">
-                {currentProduct.title}
-              </h2>
-            </div>
+          {/* Prev / Next arrows */}
+          <button
+            onClick={goToPrevious}
+            className="absolute left-4 sm:left-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white hover:bg-slate-50 text-slate-700 shadow-md transition-all z-20"
+            aria-label="Previous"
+          >
+            <ChevronLeft size={18} />
+          </button>
 
-            <p className="text-slate-600 text-sm md:text-base line-clamp-2">
-              {currentProduct.description}
-            </p>
-
-            {/* Rating */}
-            <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 fill-yellow-400 text-yellow-400" />
-                <span className="font-semibold text-slate-900">
-                  {currentProduct.rating.rate}
-                </span>
-              </div>
-              <span className="text-slate-500 text-sm">
-                ({currentProduct.rating.count} reviews)
-              </span>
-            </div>
-
-            {/* Price & CTA */}
-            <div className="space-y-4">
-              <p className="text-3xl md:text-4xl font-bold text-slate-900">
-                ${currentProduct.price.toFixed(2)}
-              </p>
-              <Link href={`/products/${currentProduct.id}`}>
-                <button className="w-full bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-colors">
-                  View Details
-                </button>
-              </Link>
-            </div>
-          </div>
+          <button
+            onClick={goToNext}
+            className="absolute right-4 sm:right-6 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-white hover:bg-slate-50 text-slate-700 shadow-md transition-all z-20"
+            aria-label="Next"
+          >
+            <ChevronRight size={18} />
+          </button>
         </div>
 
-        {/* Navigation Arrows */}
-        <button
-          onClick={goToPrevious}
-          className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-900 p-2 rounded-full shadow-lg transition-all z-10"
-          aria-label="Previous product"
-        >
-          <ChevronLeft size={24} />
-        </button>
-
-        <button
-          onClick={goToNext}
-          className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/80 hover:bg-white text-slate-900 p-2 rounded-full shadow-lg transition-all z-10"
-          aria-label="Next product"
-        >
-          <ChevronRight size={24} />
-        </button>
-      </div>
-
-      {/* Slide Indicators */}
-      <div className="flex justify-center gap-2 mt-6">
-        {bannerProducts.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => goToSlide(index)}
-            className={`h-2 rounded-full transition-all ${
-              index === currentIndex
-                ? 'bg-blue-600 w-8'
-                : 'bg-slate-300 w-2 hover:bg-slate-400'
-            }`}
-            aria-label={`Go to slide ${index + 1}`}
-          />
-        ))}
+        {/* Slide dots */}
+        <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex items-center gap-1.5 z-20">
+          {bannerProducts.map((_, i) => (
+            <button
+              key={i}
+              onClick={() => {
+                setIsAutoPlay(false);
+                changeSlide(i);
+              }}
+              className={`rounded-full transition-all duration-300 ${
+                i === currentIndex ? 'bg-slate-900 w-6 h-2' : 'bg-slate-300 hover:bg-slate-400 w-2 h-2'
+              }`}
+              aria-label={`Slide ${i + 1}`}
+            />
+          ))}
+        </div>
       </div>
     </div>
   );
