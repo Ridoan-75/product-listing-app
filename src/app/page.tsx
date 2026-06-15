@@ -8,23 +8,19 @@ export default async function HomePage() {
 
   return (
     <main className="w-full">
-      {/* Banner Section - Full Width */}
+      {/* Banner Section*/}
       <section className="bg-gradient-to-b from-blue-50 to-white">
         <Banner products={products} />
       </section>
 
       {/* Categories Section */}
-      <section className="py-12 px-4 bg-white">
-        <div className="max-w-6xl mx-auto">
-          <CategoriesSection />
-        </div>
+      <section>
+        <CategoriesSection />
       </section>
 
       {/* Featured Products Section */}
-      <section className="py-12 px-4 bg-slate-50">
-        <div className="max-w-6xl mx-auto">
-          <FeaturedProducts products={products} />
-        </div>
+      <section className="bg-slate-50">
+        <FeaturedProducts products={products} />
       </section>
     </main>
   );
