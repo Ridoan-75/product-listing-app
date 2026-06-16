@@ -23,7 +23,7 @@ export default function CategoryFilter({
   });
 
   return (
-    <Select value={value} onValueChange={onChange}>
+    <Select value={value} onValueChange={(val) => onChange(val || "")}>
       <SelectTrigger className="w-full sm:w-45">
         <SelectValue placeholder="All Categories" />
       </SelectTrigger>

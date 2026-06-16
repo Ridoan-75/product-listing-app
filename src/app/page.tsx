@@ -3,6 +3,8 @@ import Banner from "@/components/products/Banner";
 import CategoriesSection from "@/components/products/CategoriesSection";
 import FeaturedProducts from "@/components/products/FeaturedProducts";
 
+export const dynamic = 'force-dynamic';
+
 export default async function HomePage() {
   const products = await getAllProducts();
 
