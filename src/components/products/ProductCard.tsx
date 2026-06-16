@@ -3,16 +3,19 @@ import Link from "next/link";
 import { Product } from "@/types/product";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/store/cartStore";
+import { useToast } from "@/components/ui/toast-provider";
 import RatingStars from "@/components/shared/RatingStars";
 import { ShoppingCart, Eye } from "lucide-react";
 
 export default function ProductCard({ product }: { product: Product }) {
   const { addToCart } = useCart();
+  const { addToast } = useToast();
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product);
+    addToast(`${product.title} added to cart!`, 'success');
   };
 
   return (

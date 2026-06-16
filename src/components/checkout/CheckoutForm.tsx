@@ -3,6 +3,7 @@
 import { useState, FormEvent } from 'react';
 import { useRouter } from 'next/navigation';
 import { useCart } from '@/store/cartStore';
+import { useToast } from '@/components/ui/toast-provider';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { AlertCircle, CheckCircle } from 'lucide-react';
@@ -40,6 +41,7 @@ const initialFormData: FormData = {
 export default function CheckoutForm() {
   const router = useRouter();
   const { items, getTotal, clearCart } = useCart();
+  const { addToast } = useToast();
   
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<FormErrors>({});
@@ -98,6 +100,7 @@ export default function CheckoutForm() {
       await new Promise(resolve => setTimeout(resolve, 2000));
 
       setSuccessMessage('Order placed successfully! Redirecting...');
+      addToast('Your order has been confirmed!', 'success');
       
       // Clear cart and redirect after 2 seconds
       setTimeout(() => {
@@ -107,6 +110,7 @@ export default function CheckoutForm() {
 
     } catch (error) {
       setErrors({ submit: 'Failed to place order. Please try again.' });
+      addToast('Failed to place order. Please try again.', 'error');
       setIsLoading(false);
     }
   };

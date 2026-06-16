@@ -10,6 +10,7 @@ import {
   ChevronRight,
 } from "lucide-react";
 import { useCart } from "@/store/cartStore";
+import { useToast } from "@/components/ui/toast-provider";
 import { Product } from "@/types/product";
 import { PAGINATION, UI } from "@/constants";
 
@@ -126,6 +127,7 @@ function ArrowBtnComponent({
 
 export default function Banner({ products }: BannerProps) {
   const { addToCart } = useCart();
+  const { addToast } = useToast();
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlay, setIsAutoPlay] = useState(true);
   const [fading, setFading] = useState(false);
@@ -170,6 +172,7 @@ export default function Banner({ products }: BannerProps) {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product);
+    addToast(`${product.title} added to cart!`, 'success');
   };
 
   return (

@@ -3,6 +3,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 import QueryProvider from "@/providers/QueryProvider";
+import { ToastProvider } from "@/components/ui/toast-provider";
 import LayoutContent from "./LayoutContent";
 
 export const metadata: Metadata = {
@@ -23,7 +24,9 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-linear-to-b from-slate-50 to-gray-100">
         <ClerkProvider>
           <QueryProvider>
-            <LayoutContent>{children}</LayoutContent>
+            <ToastProvider>
+              <LayoutContent>{children}</LayoutContent>
+            </ToastProvider>
           </QueryProvider>
         </ClerkProvider>
       </body>
