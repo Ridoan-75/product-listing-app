@@ -5,10 +5,12 @@ import ProductGrid from "@/components/products/ProductGrid";
 import SearchBar from "@/components/search/SearchBar";
 import FilterSkeleton from "@/components/products/FilterSkeleton";
 import { useEffect, useState, useMemo } from "react";
+import { useSearchParams } from "next/navigation";
 import { ChevronDown, ChevronUp, SlidersHorizontal } from "lucide-react";
 import { Product } from "@/types/product";
 
 export default function ProductsPage() {
+  const searchParams = useSearchParams();
   const [products, setProducts] = useState<Product[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [search, setSearch] = useState("");
@@ -30,6 +32,16 @@ export default function ProductsPage() {
     fetchProducts();
   }, []);
 
+  // Initialize category from URL on first mount only
+  useEffect(() => {
+    const categoryParam = searchParams.get("category");
+    if (categoryParam) {
+      Promise.resolve().then(() => {
+        setSelectedCategory(categoryParam);
+      });
+    }
+  }, []);
+
   const categories = useMemo(() => {
     const cats = products.map((p) => p.category);
     return ["all", ...Array.from(new Set(cats))];
@@ -45,14 +57,19 @@ export default function ProductsPage() {
   const CategoryList = ({ groupName }: { groupName: string }) => (
     <div className="space-y-2.5">
       {categories.map((cat) => (
-        <label key={cat} className="flex items-center gap-3 cursor-pointer group">
+        <label
+          key={cat}
+          className="flex items-center gap-3 cursor-pointer group"
+        >
           <input
             type="radio"
             name={groupName}
             checked={selectedCategory === cat}
             onChange={() => setSelectedCategory(cat)}
             className="w-4 h-4 cursor-pointer"
-            style={{ accentColor: selectedCategory === cat ? "#dc2626" : undefined }}
+            style={{
+              accentColor: selectedCategory === cat ? "#dc2626" : undefined,
+            }}
           />
           <span
             className={`text-sm capitalize transition-colors ${
@@ -78,7 +95,9 @@ export default function ProductsPage() {
 
       {/* Price Range Filter */}
       <div className="mb-6 pb-6 border-b border-slate-200">
-        <h4 className="text-sm font-semibold text-slate-900 mb-4">Price Range</h4>
+        <h4 className="text-sm font-semibold text-slate-900 mb-4">
+          Price Range
+        </h4>
         <input
           type="range"
           min="0"
@@ -107,18 +126,18 @@ export default function ProductsPage() {
     <div className="w-full bg-linear-to-b from-slate-50 to-gray-100 py-8 xs:py-10 sm:py-12 lg:py-16">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="mb-6 xs:mb-8">
-        <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 xs:mb-4">
-          All Products
-        </h1>
-        <p className="text-slate-500 text-sm xs:text-base">
-          Browse our complete collection of {products.length} quality products
-        </p>
-      </div>
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 mb-3 xs:mb-4">
+            All Products
+          </h1>
+          <p className="text-slate-500 text-sm xs:text-base">
+            Browse our complete collection of {products.length} quality products
+          </p>
+        </div>
 
-      {/* Mobile + Tablet */}
-      <div className="lg:hidden mb-5 space-y-3">
+        {/* Mobile + Tablet */}
+        <div className="lg:hidden mb-5 space-y-3">
           {/* Search bar — বড় ও visible */}
-          <div className="bg-white rounded-2xl border-2 border-slate-200 focus-within:border-red-400 transition-colors overflow-hidden">
+          <div className="w-full bg-white rounded-2xl border-2 border-slate-200 focus-within:border-red-400 transition-colors overflow-hidden">
             <SearchBar value={search} onChange={setSearch} />
           </div>
 
@@ -136,7 +155,11 @@ export default function ProductsPage() {
                   </span>
                 )}
               </div>
-              {filtersOpen ? <ChevronUp size={18} /> : <ChevronDown size={18} />}
+              {filtersOpen ? (
+                <ChevronUp size={18} />
+              ) : (
+                <ChevronDown size={18} />
+              )}
             </button>
 
             {filtersOpen && (
@@ -157,7 +180,7 @@ export default function ProductsPage() {
                 <h3 className="text-lg font-bold text-slate-900 mb-4 pb-4 border-b border-slate-200">
                   Filters
                 </h3>
-                <div className="mb-5 rounded-xl border-2 border-slate-200 focus-within:border-red-400 transition-colors overflow-hidden">
+                <div className="w-full mb-5 rounded-xl border-2 border-slate-200 focus-within:border-red-400 transition-colors overflow-hidden">
                   <SearchBar value={search} onChange={setSearch} />
                 </div>
                 {filterContent("category-desktop")}
