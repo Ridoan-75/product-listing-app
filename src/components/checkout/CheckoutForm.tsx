@@ -368,7 +368,7 @@ export default function CheckoutForm() {
       <Button
         type="submit"
         disabled={isLoading}
-        className="w-full bg-blue-600 hover:bg-blue-700 text-white py-3 text-lg font-semibold"
+        className="w-full bg-purple-600 hover:bg-purple-700 text-white py-3 text-lg font-semibold"
       >
         {isLoading ? 'Processing...' : 'Place Order'}
       </Button>

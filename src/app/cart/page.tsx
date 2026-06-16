@@ -22,9 +22,15 @@ export default function CartPage() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Cart Items */}
-        {items.length > 0 && (
+      {items.length === 0 ? (
+        <div className="flex items-center justify-center min-h-[60vh]">
+          <div className="w-full max-w-md">
+            <CartSummary />
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          {/* Cart Items */}
           <div className="lg:col-span-2">
             <div className="space-y-4">
               {items.map((item) => (
@@ -32,13 +38,13 @@ export default function CartPage() {
               ))}
             </div>
           </div>
-        )}
 
-        {/* Cart Summary */}
-        <div className={items.length === 0 ? "w-full" : "lg:col-span-1"}>
-          <CartSummary />
+          {/* Cart Summary */}
+          <div className="lg:col-span-1">
+            <CartSummary />
+          </div>
         </div>
-      </div>
+      )}
     </>
   );
 }

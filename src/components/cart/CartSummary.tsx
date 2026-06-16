@@ -17,16 +17,18 @@ export default function CartSummary() {
 
   if (items.length === 0) {
     return (
-      <div className="bg-white rounded-lg border border-slate-200 p-6 text-center" role="region" aria-label="Empty cart message">
-        <ShoppingBag className="mx-auto mb-4 text-slate-400" size={48} aria-hidden="true" />
-        <h3 className="text-xl font-semibold text-slate-900 mb-2">
+      <div className="bg-gradient-to-br from-slate-50 to-slate-100 rounded-xl border-2 border-dashed border-slate-300 p-8 text-center" role="region" aria-label="Empty cart message">
+        <div className="bg-white rounded-full w-16 h-16 flex items-center justify-center mx-auto mb-6 shadow-sm">
+          <ShoppingBag className="text-slate-400" size={32} aria-hidden="true" />
+        </div>
+        <h3 className="text-2xl font-bold text-slate-900 mb-3">
           Your cart is empty
         </h3>
-        <p className="text-slate-500 mb-6">
-          Add some products to get started!
+        <p className="text-slate-600 mb-8 text-sm leading-relaxed">
+          Looks like you haven't added anything yet. Browse our collection and find something you love!
         </p>
-        <Link href="/products">
-          <Button className="w-full">Continue Shopping</Button>
+        <Link href="/products" className="block">
+          <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-lg transition-all">Continue Shopping</Button>
         </Link>
       </div>
     );
@@ -92,7 +94,7 @@ export default function CartSummary() {
           </SignInButton>
         ) : (
           <Link href="/checkout" className="block">
-            <Button className="w-full">
+            <Button className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold">
               Proceed to Checkout
             </Button>
           </Link>
@@ -100,7 +102,7 @@ export default function CartSummary() {
       </div>
 
       {/* Continue Shopping Button */}
-      <Link href="/">
+      <Link href="/products">
         <Button variant="outline" className="w-full" aria-label="Continue shopping">
           Continue Shopping
         </Button>
