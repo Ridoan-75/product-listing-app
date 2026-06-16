@@ -3,10 +3,11 @@
 import { useEffect, useState } from 'react';
 import { getAllProducts } from "@/lib/api";
 import Banner from "@/components/products/Banner";
+import BannerSkeleton from "@/components/products/BannerSkeleton";
 import CategoriesSection from "@/components/products/CategoriesSection";
 import FeaturedProducts from "@/components/products/FeaturedProducts";
+import FeaturedProductsSkeleton from "@/components/products/FeaturedProductsSkeleton";
 import { Product } from '@/types/product';
-import FilterSkeleton from '@/components/products/FilterSkeleton';
 
 export default function HomePage() {
   const [products, setProducts] = useState<Product[]>([]);
@@ -31,7 +32,7 @@ export default function HomePage() {
     <>
       {/* Banner Section */}
       {isLoading ? (
-        <FilterSkeleton />
+        <BannerSkeleton />
       ) : products.length > 0 ? (
         <Banner products={products} />
       ) : (
@@ -47,7 +48,7 @@ export default function HomePage() {
 
       {/* Featured Products Section */}
       {isLoading ? (
-        <FilterSkeleton />
+        <FeaturedProductsSkeleton />
       ) : products.length > 0 ? (
         <FeaturedProducts products={products} />
       ) : (

@@ -68,14 +68,14 @@ export default function ProductsPage() {
             onChange={() => setSelectedCategory(cat)}
             className="w-4 h-4 cursor-pointer"
             style={{
-              accentColor: selectedCategory === cat ? "#dc2626" : undefined,
+              accentColor: selectedCategory === cat ? "#a855f7" : undefined,
             }}
           />
           <span
             className={`text-sm capitalize transition-colors ${
               selectedCategory === cat
-                ? "text-red-600 font-semibold"
-                : "text-slate-600 group-hover:text-red-600"
+                ? "text-purple-600 font-semibold"
+                : "text-slate-600 group-hover:text-purple-600"
             }`}
           >
             {cat === "all" ? "All Categories" : cat}
@@ -104,7 +104,7 @@ export default function ProductsPage() {
           max="1000"
           value={maxPrice}
           onChange={(e) => setMaxPrice(Number(e.target.value))}
-          className="w-full accent-red-600"
+          className="w-full accent-purple-600"
         />
         <div className="flex justify-between mt-3 text-sm font-semibold text-slate-900">
           <span>$0</span>
@@ -115,9 +115,9 @@ export default function ProductsPage() {
       {/* Reset Button */}
       <button
         onClick={handleResetFilters}
-        className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-300 text-sm"
+        className="w-full bg-red-600 hover:bg-red-700 text-white font-semibold py-2.5 rounded-lg transition-all duration-300 text-sm cursor-pointer"
       >
-        Reset Filters
+        Reset All
       </button>
     </>
   );
@@ -137,7 +137,7 @@ export default function ProductsPage() {
         {/* Mobile + Tablet */}
         <div className="lg:hidden mb-5 space-y-3">
           {/* Search bar — বড় ও visible */}
-          <div className="w-full bg-white rounded-2xl border-2 border-slate-200 focus-within:border-red-400 transition-colors overflow-hidden">
+          <div className="w-full bg-white rounded-2xl border-2 border-slate-200 focus-within:border-purple-400 transition-colors overflow-hidden">
             <SearchBar value={search} onChange={setSearch} />
           </div>
 
@@ -147,10 +147,10 @@ export default function ProductsPage() {
               className="w-full flex items-center justify-between p-4 font-bold text-slate-900"
             >
               <div className="flex items-center gap-2">
-                <SlidersHorizontal size={16} className="text-red-600" />
+                <SlidersHorizontal size={16} className="text-purple-600" />
                 <span>Filters</span>
                 {selectedCategory !== "all" && (
-                  <span className="text-xs bg-red-100 text-red-600 font-semibold px-2 py-0.5 rounded-full">
+                  <span className="text-xs bg-purple-100 text-purple-600 font-semibold px-2 py-0.5 rounded-full">
                     1
                   </span>
                 )}
@@ -180,7 +180,7 @@ export default function ProductsPage() {
                 <h3 className="text-lg font-bold text-slate-900 mb-4 pb-4 border-b border-slate-200">
                   Filters
                 </h3>
-                <div className="w-full mb-5 rounded-xl border-2 border-slate-200 focus-within:border-red-400 transition-colors overflow-hidden">
+                <div className="w-full mb-5 rounded-xl border-2 border-slate-200 focus-within:border-purple-400 transition-colors overflow-hidden">
                   <SearchBar value={search} onChange={setSearch} />
                 </div>
                 {filterContent("category-desktop")}
